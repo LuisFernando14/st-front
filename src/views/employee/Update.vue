@@ -2,7 +2,7 @@
   <div id="addEmployee">
     <div class="container">
       <h3>Editar Empleado</h3>
-      <EmployeeComponent :action=true></EmployeeComponent>
+      <EmployeeComponent :employeeId=employeeId :action=true></EmployeeComponent>
     </div>
   </div>
 </template>
@@ -12,6 +12,11 @@ export default {
   name: 'UpdateEmployee',
   components: {
     EmployeeComponent
+  },
+  data () {
+    return {
+      employeeId: this.$route.params.id
+    }
   }
 }
 </script>

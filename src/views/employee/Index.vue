@@ -21,11 +21,11 @@
             </thead>
             <tbody>
             <tr v-for="employee in employees" :key="employee.id">
-              <th>{{employee.fullName}}</th>
-              <td>{{employee.dob}}</td>
-              <td>{{employee.department}}</td>
-              <td>{{employee.salary}}</td>
-              <td><a :href="`/#/employees/edit/${employee.id}`">Modificar</a>   |   <a :href="`/#/employees/delete/${employee.id}`">Borrar</a></td>
+              <th>{{employee.Nombre}} {{employee.ApPaterno}} {{employee.ApMaterno}}</th>
+              <td>{{employee.FecNac | formatDate}}</td>
+              <td>{{employee.Departamento}}</td>
+              <td>${{employee.Sueldo | formatNumber}}</td>
+              <td><a :href="`/#/employees/edit/${employee.Clave_Emp}`">Modificar</a>   |   <a :href="`/#/employees/delete/${employee.Clave_Emp}`">Borrar</a></td>
             </tr>
             </tbody>
           </table>
@@ -38,6 +38,7 @@
 export default {
   name: 'Employee',
   mounted () {
+    this.getEmployees()
   },
   computed: {
 
@@ -46,7 +47,16 @@ export default {
 
   },
   filters: {
-
+    formatDate: function (value) {
+      if (value) {
+        return `${value.substr(8, 2)}/${value.substr(5, 2)}/${value.substr(0, 4)}`
+      }
+    },
+    formatNumber: function (value) {
+      if (value) {
+        return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+      }
+    }
   },
   data () {
     return {
@@ -69,7 +79,12 @@ export default {
     }
   },
   methods: {
-
+    getEmployees () {
+      this.$http.get(`/employees/`).then(response => {
+        this.employees = response.data
+      }).catch(() => {
+      })
+    }
   },
   created () {
   }

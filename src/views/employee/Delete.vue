@@ -45,12 +45,17 @@ export default {
         department: '',
         salary: 0,
         dob: ''
-      }
+      },
+      employeeId: this.$route.params.id
     }
   },
   methods: {
     deleteEmployee () {
-
+      this.$http.delete(`/employees/${this.employeeId}`).then(response => {
+        this.employees = response.data
+      }).catch(() => {
+      })
+      window.location.replace('/#/employees')
     }
   },
   created () {
